@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlecture.dao.NoteDao">
+	<!-- 
+	<select id="getList" resultType="com.newlecture.entity.Note">어느객체에담을지
+		select * from Note
+		limit ${(_parameter-1)*15},15 가지고오고싶은갯수, rowNum이필요없음,중괄호 안에서 연산이되야함
+	</select>
+	 -->
+
+	<select id="get" resultType="com.newlecture.entity.Note">
+		select * from Note where id=#{id}; <!-- cf)${id}:무조건 값으로''이게 안들어감. -->
+	</select>
+	
+	<insert id="insert" parameterType="com.newlecture.entity.Note">
+		insert into Note(title, content, writerId)
+		values(#{title},#{content},#{writerId})
+	</insert>
+
+
+</mapper>

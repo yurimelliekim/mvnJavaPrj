@@ -1,6 +1,7 @@
 package com.newlecture.controller;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -8,18 +9,66 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.newlecture.controller.notice.ListController;
+import com.newlecture.controller.note.ListController;
 
-
+//안씀.
 //annotation 지우기.
 public class DispatcherController extends HttpServlet{
 
+	Map<String,Controller> urlMap;
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+
+		String pathUrl = config.getInitParameter("path");//web.xml의 init-param의 key
+		
+		if(pathUrl==null)
+			pathUrl = "/WEB-INF/mapper.properties";//경로를 고정시켜놓으면 좋지않음. 그래서 if조건으로!!
+		
+	
+		//물리경로로 바꾸기
+		String pathSystem = config
+								.getServletContext()
+								.getRealPath(pathUrl);
+		
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream(pathSystem);
+			Properties properties = new Properties();
+			properties.load(fis);
+			
+			urlMap = new HashMap<>();
+			
+			for(Object key : properties.keySet()) {
+				   
+				   try {
+				      String url = String.valueOf(key);
+				      String className = String.valueOf(properties.get(key));
+				      Controller controller = (Controller)Class.forName(className).newInstance();
+				      urlMap.put(url, controller);
+				      
+				   } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+				      // TODO Auto-generated catch block
+				      e.printStackTrace();
+				   }   
+				}
+			
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	
+	}
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,10 +76,8 @@ public class DispatcherController extends HttpServlet{
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		
-		
-		/*
 		PrintWriter out = response.getWriter();
-	      
+		  /*
 	      out.printf("getRequestURL : %s<br />\n", request.getRequestURL());
 	      out.printf("getRequestURI : %s<br />\n", request.getRequestURI());
 	      out.printf("getContextPath : %s<br />\n", request.getContextPath());//getContextPath : /webprj 이 주소를 떼내기 위해서
@@ -56,11 +103,14 @@ public class DispatcherController extends HttpServlet{
 		String[] urls = new String[] {"/index.htm","/notice/list.htm"}; 
 		Controller[] controllers = new Controller[] {new IndexController(),new ListController()};
 		*/
-		String pathUrl = "/WEB-INF/mapper.properties";
+		//String pathUrl = "/WEB-INF/mapper.properties";//경로를 고정시켜놓으면 좋지않음.
+		
+		
+		
 		
 		
 		//물리경로로 바꾸기
-		String pathSystem = request
+		/*String pathSystem = request
 								.getServletContext()
 								.getRealPath(pathUrl);
 		
@@ -68,10 +118,10 @@ public class DispatcherController extends HttpServlet{
 		
 		Properties properties = new Properties();
 		properties.load(fis);
-		
+		*/
 		
 		//Map<String,Controller> urlMap = (Map)properties;//형변환
-		Map<String,Controller> urlMap = new HashMap<>();
+		/*Map<String,Controller> urlMap = new HashMap<>();
 		
 		for(Object key : properties.keySet()) {
 			   
@@ -86,7 +136,7 @@ public class DispatcherController extends HttpServlet{
 			      e.printStackTrace();
 			   }   
 			}
-		
+		*/
 		
 		/*Map<String,Controller> urlMap = new HashMap<>();
 

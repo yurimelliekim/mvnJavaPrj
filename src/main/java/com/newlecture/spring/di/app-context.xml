@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 주문서 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+	
+  	 <!--  Exam exam = new Exam();
+        FlowExamConsole console = new FlowExamConsole();
+        console.setExam(exam); -->
+  
+	  <!-- 콩자루에 담는것이 이게(밑에 주석) 다가아니라고 알려주는것 -->
+	  <context:component-scan base-package="com.newlecture.spring.di"></context:component-scan>
+  <!-- 위에걸 설정하면 이건 자동으로들어감 -->
+ <!--  <context:annotation-config></context:annotation-config> --><!-- 이게 있어야함어노테이션설정 -->
+  
+  
+  
+ <!--  
+  <bean name ="exam1" class="com.newlecture.spring.di.Exam">
+    	<constructor-arg value="500"></constructor-arg>
+    	<constructor-arg value="200"></constructor-arg>
+    	<constructor-arg value="300"></constructor-arg>
+    	<constructor-arg index="0" or name="kor" or type="float" 이런식으로 할 수 있음 value="30"></constructor-arg>
+    </bean>
+  
+    <bean name ="exam2" class="com.newlecture.spring.di.Exam">
+    	<constructor-arg value="10"></constructor-arg>
+    	<constructor-arg value="20"></constructor-arg>
+    	<constructor-arg value="30"></constructor-arg>
+    	<constructor-arg index="0" or name="kor" or type="float" 이런식으로 할 수 있음 value="30"></constructor-arg>
+    </bean> -->
+   
+    <bean name ="console" class="com.newlecture.spring.di.FlowExamConsole">
+    	<!-- <property name="exam"  ref="exam"/> 원래setter를 의미하는거임 name="setExam"임 객체로찾아야되서 property니까 name=exam으로 써야함 -->
+    	<!-- <constructor-arg ref="exam"/> --><!-- 생성자의 argument로 exam을 참조 -->
+    </bean>
+    
+</beans>
